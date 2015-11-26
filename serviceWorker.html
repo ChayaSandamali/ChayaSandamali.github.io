@@ -121,15 +121,17 @@ limitations under the License.
     }
 
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.unregister('./service-worker.js').then(function (boolean) {
-            navigator.serviceWorker.register('./service-worker.js', {scope: './'})
-                    .then(waitUntilInstalled)
-                    .then(showFilesList)
-                    .catch(function (error) {
-                        // Something went wrong during registration. The service-worker.js file
-                        // might be unavailable or contain a syntax error.
-                        document.querySelector('#status').textContent = error;
-                    });
+        navigator.serviceWorker.getRegistration().then(function (r) {
+            r.unregister('./service-worker.js').then(function (boolean) {
+                navigator.serviceWorker.register('./service-worker.js', {scope: './'})
+                        .then(waitUntilInstalled)
+                        .then(showFilesList)
+                        .catch(function (error) {
+                            // Something went wrong during registration. The service-worker.js file
+                            // might be unavailable or contain a syntax error.
+                            document.querySelector('#status').textContent = error;
+                        });
+            });
         });
     } else {
         // The current browser doesn't support service workers.
