@@ -54,7 +54,7 @@ limitations under the License.
 </head>
 
 <body>
-<h1>Service Worker Sample: Pre-fetching Resources During Registration</h1>
+<h1>Service Chaya Worker Sample: Pre-fetching Resources During Registration</h1>
 
 <p>Available in <a href="https://www.chromestatus.com/feature/6561526227927040">Chrome 40+</a></p>
 
@@ -121,14 +121,18 @@ limitations under the License.
     }
 
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./service-worker.js', {scope: './'})
-                .then(waitUntilInstalled)
-                .then(showFilesList)
-                .catch(function(error) {
-                    // Something went wrong during registration. The service-worker.js file
-                    // might be unavailable or contain a syntax error.
-                    document.querySelector('#status').textContent = error;
-                });
+        navigator.serviceWorker.getRegistration().then(function (r) {
+            r.unregister('./service-worker.js').then(function (boolean) {
+                navigator.serviceWorker.register('./service-worker.js', {scope: './'})
+                        .then(waitUntilInstalled)
+                        .then(showFilesList)
+                        .catch(function (error) {
+                            // Something went wrong during registration. The service-worker.js file
+                            // might be unavailable or contain a syntax error.
+                            document.querySelector('#status').textContent = error;
+                        });
+            });
+        });
     } else {
         // The current browser doesn't support service workers.
         var aElement = document.createElement('a');
