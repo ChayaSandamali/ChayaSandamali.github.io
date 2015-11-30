@@ -39,8 +39,8 @@ self.addEventListener('install', function(event) {
     var now = Date.now();
 
     var urlsToPrefetch = [
-        'home.html',
-        'sample1.html'
+        'main.html',
+        'contact.html'
         // This is an image that will be used in pre_fetched.html
         //'project.html'
     ];
